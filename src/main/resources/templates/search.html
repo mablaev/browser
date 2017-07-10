@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Search</title>
+</head>
+
+<link rel="stylesheet" type="text/css" href="css/custom.css"></link>
+
+<link rel="stylesheet" type="text/css" href="lib/DataTables/Bootstrap-3.3.7/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="lib/DataTables/DataTables-1.10.13/css/dataTables.bootstrap.css"/>
+
+
+<link rel="stylesheet" type="text/css" href="lib/highlight/vs.css"></link>
+
+<script type="text/javascript" src="lib/DataTables/jQuery-2.2.4/jquery-2.2.4.js"></script>
+
+<script type="text/javascript" src="lib/DataTables/Bootstrap-3.3.7/js/bootstrap.js"></script>
+<script type="text/javascript" src="lib/DataTables/DataTables-1.10.13/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="lib/DataTables/DataTables-1.10.13/js/dataTables.bootstrap.js"></script>
+
+<script type="text/javascript" src="lib/highlight/highlight.min.js"></script>
+<script type="text/javascript" src="js/utils.js"></script>
+
+<script type="text/javascript">
+  
+	$(document).ready(function() {
+		
+		  init();
+		
+		  var searchInput = getParameterByName('query');
+		  if (searchInput) {
+			  $("#query").val(searchInput);
+          	  drawQueryPlan(searchInput);
+          	  //return;
+		  }
+		
+    	  $("#searcher").bind('submit', function (e) {
+          	  e.preventDefault();
+          	  
+          	  searchInput = $("#query").val();
+          	  window.history.pushState("search", "search-param", "?query=" + searchInput);
+
+          	  $('#query-plan-tab').tab('show');
+          	  drawQueryPlan(searchInput);          	  
+    	  });
+      });
+</script>
+<body>
+<div>
+    <table width="100%" cellspacing="5" style="margin: 5px">
+        <tr>
+            <form id="searcher" method="get">
+                <td width="97%">
+                    <input type="text" name="query" id="query" style="width:100%"/>
+                </td>
+                <td width="3%">
+                    <input type="submit" value="Search"/>
+                </td>
+            </form>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <br/>
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#query-plan-tab" aria-controls="query-plan-tab" role="tab" data-toggle="tab">
+                            Query Plan
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#query-data-tab" aria-controls="query-data-tab" role="tab" data-toggle="tab">
+                            Accept plan and execute query
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="query-plan-tab" role="tabpanel" class="tab-pane fade in active"></div>
+                    <div id="query-data-tab" role="tabpanel" class="tab-pane fade"></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+</body>
+</html>
